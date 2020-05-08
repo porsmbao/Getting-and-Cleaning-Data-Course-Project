@@ -9,13 +9,14 @@ test_activity <- readLines("./data/test/y_test.txt")
 train_activity <- readLines("./data/train/y_train.txt")
 subject_test <- fread("./data/test/subject_test.txt", stringsAsFactors = F, header = F)
 subject_train <- fread("./data/train/subject_train.txt", stringsAsFactors = F, header = F)
-#add activity column to data
+
+#add activity and subject column to data
 test_df <- mutate(test_df, activity = test_activity)
 test_df <- mutate(test_df, subject = subject_test$V1)
 train_df <- mutate(train_df, activity = train_activity)
 train_df <- mutate(train_df, subject = subject_train$V1)
 
-#merging 2 sets
+#merging training and testing sets
 dt <- add_row(test_df,train_df)
 
 #subsetting those with "mean" and "std" inside
@@ -42,5 +43,6 @@ avg <- dt %>%
         select(subject, activity, 1:79) %>%
         arrange(subject, activity)
 
+#writing data
 write.table(avg, file = "average_data.txt", row.name = F)
 write.table(dt, file = "tidy_data.txt", row.name = F)
