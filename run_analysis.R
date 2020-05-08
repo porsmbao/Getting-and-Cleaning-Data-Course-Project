@@ -17,7 +17,7 @@ train_df <- mutate(train_df, activity = train_activity)
 train_df <- mutate(train_df, subject = subject_train$V1)
 
 #merging training and testing sets
-dt <- add_row(test_df,train_df)
+dt <- add_row(test_df, )
 
 #subsetting those with "mean" and "std" inside
 dt <- select(dt, grep("mean|std", features$V2), activity, subject)
@@ -31,15 +31,15 @@ dt$activity <- gsub("5", "STANDING", dt$activity)
 dt$activity <- gsub("6", "LAYING", dt$activity)
 
 #use descriptive column names
-cnames <- unlist(unclass(features[grep("mean|std", features$V2),2])$V2)
+cnames <- unlist(unclass(features[grep("mean|std", features$V2), 2])$V2)
 colnames(dt) <- c(cnames, "activity", "subject")
 
 #creating new dataset with average values of measurements by each subject and activity
 avg <- dt %>% 
         group_by(subject) %>% 
         group_by(activity) %>% 
-        mutate_at(1:79,mean) %>% 
-        distinct()%>%
+        mutate_at(1:79, mean) %>% 
+        distinct() %>%
         select(subject, activity, 1:79) %>%
         arrange(subject, activity)
 
